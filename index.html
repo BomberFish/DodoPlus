@@ -21,7 +21,7 @@
         <p class="arial">ICE DODO</p>
         <div class="loader"></div>
         <p class="arial" id="loading_status">Loading game assets...</p>
-        <p class="arial">This could take a while.<br>Please wait 5 minutes!</p>
+        <p class="arial">This might take a while.</p>
     </div>
     <!-- render section -->
     <canvas id="renderCanvas"></canvas>
@@ -54,9 +54,11 @@
         <h2>SPACEBAR TO JUMP</h2>
     </div>
 
-    <div id="curr_time">TIME: 0/0:00</div>
-    <div id="fpsmeter">FPS: 0</div>
-    <div id="best_time"></div>
+    <div id="curr_time" class="stat left">SCORE: 0</div>
+    <div id="curr_timecode" class="stat left-after">TIME: 0:00</div>
+    <div id="fpsmeter" class="stat right">FPS: 0</div>
+    <div id="best_time" class="stat left"></div>
+    <div id="best_timecode" class="stat left-after"></div>
     <!-- controls -->
     <div id="left_mobile_btn" class="mobile_btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
@@ -267,7 +269,6 @@
         <a target="_blank" id="map_leaderboard" class='leaderboard_buttons'>Open Leaderboard</a>
         <h1 class="speedrun_info" id="speedrun_best"></h1>
         <h1 class="speedrun_info" id="speedrun_now"></h1>
-    </div>
     <table id="menu">
         <tr>
             <th class="btn" id="play_tab_btn">

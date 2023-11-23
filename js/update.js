@@ -1,12 +1,12 @@
 var update = {
 	interval: null,
-	init: function() {
+	init: function () {
 		if (settings.frameRate === "fixed") {
-			this.interval = setInterval(this.loop, 1000/60);
+			this.interval = setInterval(this.loop, 1000 / 60);
 		} else if (settings.frameRate === "vsync") {
 			engine.runRenderLoop(this.loop);
 		} else {
-			this.interval = setInterval(this.loop, 1000/settings.frameRate);
+			this.interval = setInterval(this.loop, 1000 / settings.frameRate);
 		}
 		window.addEventListener("resize", function () {
 			if (settings.map_id) {
@@ -14,28 +14,29 @@ var update = {
 			}
 		});
 	},
-	set_rate: function(rate) {
+	set_rate: function (rate) {
 		engine.stopRenderLoop(this.loop);
-		this.interval = setInterval(this.loop, 1000/rate);
+		this.interval = setInterval(this.loop, 1000 / rate);
 	},
-	set_fixed: function() {
+	set_fixed: function () {
 		engine.stopRenderLoop(this.loop);
-		this.interval = setInterval(this.loop, 1000/60);
+		this.interval = setInterval(this.loop, 1000 / 60);
 	},
-	set_vsync: function() {
+	set_vsync: function () {
 		clearInterval(this.interval);
 		engine.runRenderLoop(this.loop);
 	},
-	loop: function() {
+	loop: function () {
 		scene.render();
 		update.new_frame();
 		stats.update_fps();
 	},
-	new_frame: function() {
+	new_frame: function () {
 		if ((alive) && (!transitioning)) {
 			try {
 				stats.score += 1;
-				$("#curr_time").html("TIME: " + stats.score);
+				$("#curr_time").html("SCORE: " + stats.score);
+				$("#curr_timecode").html("TIME: " + stats.timecode(stats.score));
 				// render call
 				this.player_move();
 				map.render_update();
@@ -48,12 +49,12 @@ var update = {
 					flyjump.compute_loop();
 					this.update_overlay();
 				}
-			} catch(err) {
-				
+			} catch (err) {
+				console.error("Error in update loop: " + err);
 			}
 		}
 	},
-	collision_check: function() {
+	collision_check: function () {
 		// if death
 		if (player.position.y < -20) {
 			change_state.die();
@@ -66,7 +67,7 @@ var update = {
 		}
 
 		// if hit cone
-		for (var i=0;i<maker.cone_count;i++) {
+		for (var i = 0; i < maker.cone_count; i++) {
 			let cone = cones[i];
 			if (this.are_touching(player, cone, 0.5)) {
 				change_state.die();
@@ -76,7 +77,7 @@ var update = {
 		}
 
 		// if hit ending
-		for (var i=0;i<maker.ending_count;i++) {
+		for (var i = 0; i < maker.ending_count; i++) {
 			let ending = endings[i];
 			if (this.are_touching(player, ending, 1.2)) { // previously 1.0
 				change_state.win();
@@ -84,15 +85,15 @@ var update = {
 			}
 		}
 	},
-	player_move: function() {
+	player_move: function () {
 		// steer
 		var action = 0;
-		if (controls.right) {action += 1};
-		if (controls.left) {action -= 1};
-		if (controls.space) {flyjump.jump()};
+		if (controls.right) { action += 1 };
+		if (controls.left) { action -= 1 };
+		if (controls.space) { flyjump.jump() };
 		if ((speed !== default_speed) && (speed !== 0.2)) {
-			player.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,0,0));
-			player.rotationQuaternion = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0,0,0),0);
+			player.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+			player.rotationQuaternion = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, 0, 0), 0);
 		}
 		rotation += action * steer;
 		player.rotation.y = rotation;
@@ -112,7 +113,7 @@ var update = {
 		camera.rotation.x = cam_depression;
 		light.position = camera.position;
 	},
-	are_touching: function(a, b, r) {
+	are_touching: function (a, b, r) {
 		let dz = a.position.z - b.position.z;
 		if (Math.abs(dz) < r) {
 			let dx = a.position.x - b.position.x;
@@ -125,13 +126,13 @@ var update = {
 		}
 		return false;
 	},
-	set_gravity: function(val) {
+	set_gravity: function (val) {
 		scene.gravity = new BABYLON.Vector3(0, val, 0);
 		gravity = scene.gravity;
 		scene.getPhysicsEngine().setGravity(scene.gravity);
 		player.applyGravity = true;
 	},
-	update_overlay: function() {
+	update_overlay: function () {
 		if (flyjump.can_jump == true) {
 			$("#jump_enabled").show();
 			$("#space_mobile_btn").css("opacity", 1.0);

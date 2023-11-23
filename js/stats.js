@@ -23,5 +23,15 @@ var stats = {
 				sync.set("frameRate", "fixed");
 			}
 		}
+	},
+	zeroPad: function (n) { // borrowed from a fitbit clockface of all things
+		if (n < 10) {
+			n = "0" + n;
+		}
+		return n;
+	},
+	timecode: function(n) {
+		var fps = engine.getFps();
+		return this.zeroPad((Math.floor(n / (60 * fps))) % 60) + ":" + this.zeroPad((Math.floor(n / fps)) % 60) + ":" + this.zeroPad(Math.floor(((n % fps) * 1000 / fps) / 10));
 	}
 }

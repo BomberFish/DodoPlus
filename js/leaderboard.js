@@ -167,6 +167,7 @@ var leaderboard = {
 	speedrun_on_open_map() {
 		$("#curr_time").html("");
 		$("#best_time").html("");
+		$("#best_timecode").html("");
 		$("#speedrun_now").text("");
 		$("#speedrun_best").text("");
 
@@ -180,7 +181,8 @@ var leaderboard = {
 				
 				if (highscore < INF) {
 					console.log("TRIGGERED");
-					$("#best_time").html("BEST: " + highscore);
+					$("#best_time").html("BEST SCORE: " + highscore);
+					$("#best_timecode").html("BEST TIME: " + stats.timecode(highscore));
 					$("#speedrun_best").text("Your Best Speedrun time: "+highscore);
 				}
 			});
